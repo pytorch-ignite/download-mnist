@@ -14,9 +14,11 @@ runs:
     - run: mkdir -p ${{ inputs.target_dir }}
       shell: bash
     # Copy files to the target_dir/MNIST/raw
-    - run: |
-      cp ${GITHUB_ACTION_PATH}/t10k-images-idx3-ubyte.gz ${{ inputs.target_dir }}
-      cp ${GITHUB_ACTION_PATH}/t10k-labels-idx1-ubyte.gz ${{ inputs.target_dir }}
-      cp ${GITHUB_ACTION_PATH}/train-images-idx3-ubyte.gz ${{ inputs.target_dir }}
-      cp ${GITHUB_ACTION_PATH}/train-labels-idx1-ubyte.gz  ${{ inputs.target_dir }}
+    - run: cp ${GITHUB_ACTION_PATH}/t10k-images-idx3-ubyte.gz ${{ inputs.target_dir }}
+      shell: bash
+    - run: cp ${GITHUB_ACTION_PATH}/t10k-labels-idx1-ubyte.gz ${{ inputs.target_dir }}
+      shell: bash
+    - run: cp ${GITHUB_ACTION_PATH}/train-images-idx3-ubyte.gz ${{ inputs.target_dir }}
+      shell: bash
+    - run: cp ${GITHUB_ACTION_PATH}/train-labels-idx1-ubyte.gz  ${{ inputs.target_dir }}
       shell: bash
