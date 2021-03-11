@@ -13,7 +13,7 @@ runs:
     # Create target path
     - run: mkdir -p ${{ inputs.target_dir }}
       shell: bash
-    # Copy files to the target_dir/MNIST/raw
+    # Copy files to the target path
     - run: cp ${GITHUB_ACTION_PATH}/t10k-images-idx3-ubyte.gz ${{ inputs.target_dir }}
       shell: bash
     - run: cp ${GITHUB_ACTION_PATH}/t10k-labels-idx1-ubyte.gz ${{ inputs.target_dir }}
