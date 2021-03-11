@@ -3,16 +3,20 @@ description: 'http://yann.lecun.com/exdb/mnist Dataset Mirror'
 
 inputs:
   target_dir:
-    description: 'Target dir, files will be copied to target_dir/MNIST/raw'
+    description: 'Target dir. Defaults: ./MNIST/raw'
     required: true
-    default: '.'
+    default: './MNIST/raw'
 
 runs:
   using: 'composite'
   steps:
     # Create target path
-    - run: mkdir -p ${{ inputs.target_dir }}/MNIST/raw
+    - run: mkdir -p ${{ inputs.target_dir }}
       shell: bash
     # Copy files to the target_dir/MNIST/raw
-    - run: cp ${GITHUB_ACTION_PATH}/*.gz ${{ inputs.target_dir }}/MNIST/raw
+    - run: |
+      cp ${GITHUB_ACTION_PATH}/t10k-images-idx3-ubyte.gz ${{ inputs.target_dir }}
+      cp ${GITHUB_ACTION_PATH}/t10k-labels-idx1-ubyte.gz ${{ inputs.target_dir }}
+      cp ${GITHUB_ACTION_PATH}/train-images-idx3-ubyte.gz ${{ inputs.target_dir }}
+      cp ${GITHUB_ACTION_PATH}/train-labels-idx1-ubyte.gz  ${{ inputs.target_dir }}
       shell: bash
