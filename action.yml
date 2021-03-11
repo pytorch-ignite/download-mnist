@@ -1,0 +1,15 @@
+name: 'Download MNIST GitHub Action'
+description: 'http://yann.lecun.com/exdb/mnist Dataset Mirror'
+
+inputs:
+  target_dir:
+    description: 'Target dir'
+    required: true
+    default: './'
+
+runs:
+  using: 'composite'
+  steps:
+    # Copy archives to the target_dir
+    - run: cp ${{ github.action_path }}/*.gz ${{ inputs.target_dir }}
+      shell: bash
