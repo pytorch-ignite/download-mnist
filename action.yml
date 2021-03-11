@@ -11,5 +11,5 @@ runs:
   using: 'composite'
   steps:
     # Copy archives to the target_dir
-    - run: cp ${{ github.action_path }}/*.gz ${{ inputs.target_dir }}
+    - run: cp ${GITHUB_ACTION_PATH}/*.gz ${{ inputs.target_dir }}
       shell: bash
