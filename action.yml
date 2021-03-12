@@ -3,22 +3,16 @@ description: 'http://yann.lecun.com/exdb/mnist Dataset Mirror'
 
 inputs:
   target_dir:
-    description: 'Target dir. Defaults: ./MNIST/raw'
+    description: 'Target dir. Defaults: .'
     required: true
-    default: './MNIST/raw'
+    default: '.'
 
 runs:
   using: 'composite'
   steps:
-    # Create target path
-    - run: mkdir -p ${{ inputs.target_dir }}
+    - run: echo "INPUT_TARGET_DIR=${{ inputs.target_dir }}" >> $GITHUB_ENV
       shell: bash
-    # Copy files to the target path
-    - run: cp ${GITHUB_ACTION_PATH}/t10k-images-idx3-ubyte.gz ${{ inputs.target_dir }}
+    - run: pip install "torchvision==0.9"
       shell: bash
-    - run: cp ${GITHUB_ACTION_PATH}/t10k-labels-idx1-ubyte.gz ${{ inputs.target_dir }}
-      shell: bash
-    - run: cp ${GITHUB_ACTION_PATH}/train-images-idx3-ubyte.gz ${{ inputs.target_dir }}
-      shell: bash
-    - run: cp ${GITHUB_ACTION_PATH}/train-labels-idx1-ubyte.gz  ${{ inputs.target_dir }}
+    - run: python ${GITHUB_ACTION_PATH}/run.py
       shell: bash
