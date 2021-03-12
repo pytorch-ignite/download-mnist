@@ -12,7 +12,7 @@ runs:
   steps:
     - run: echo "INPUT_TARGET_DIR=${{ inputs.target_dir }}" >> $GITHUB_ENV
       shell: bash
-    - run: pip install "torchvision==0.9"
+    - run: pip3 install "torchvision==0.9"
       shell: bash
-    - run: python ${GITHUB_ACTION_PATH}/run.py
+    - run: python3 ${GITHUB_ACTION_PATH}/run.py
       shell: bash
