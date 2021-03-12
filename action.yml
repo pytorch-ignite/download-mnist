@@ -14,7 +14,7 @@ runs:
       shell: bash
     - run: python3 -m venv action_env || python -m venv action_env || echo ""
       shell: bash
-    - run: action_env/bin/python3 -m pip install torch==1.8.0+cpu torchvision==0.9.0+cpu -f https://download.pytorch.org/whl/torch_stable.html || action_env/Scripts/python.exe -m pip install torch==1.8.0+cpu torchvision==0.9.0+cpu -f https://download.pytorch.org/whl/torch_stable.html || echo ""
+    - run: action_env/bin/python3 -m pip install torch==1.8.0 torchvision==0.9.0 -f https://download.pytorch.org/whl/cpu/torch_stable.html || action_env/Scripts/python.exe -m pip install torch==1.8.0 torchvision==0.9.0 -f https://download.pytorch.org/whl/cpu/torch_stable.html || echo ""
       shell: bash
     - run: action_env/bin/python3 ${GITHUB_ACTION_PATH}/run.py || action_env/Scripts/python.exe ${GITHUB_ACTION_PATH}/run.py || echo ""
       shell: bash
