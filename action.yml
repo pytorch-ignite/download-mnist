@@ -12,7 +12,9 @@ runs:
   steps:
     - run: echo "INPUT_TARGET_DIR=${{ inputs.target_dir }}" >> $GITHUB_ENV
       shell: bash
-    - run: pip3 install "torchvision==0.9"
+    - run: python3 -m venv action_env || python -m venv action_env
       shell: bash
-    - run: python3 ${GITHUB_ACTION_PATH}/run.py
+    - run: action_env/bin/python3 -m pip install torch==1.8.0+cpu torchvision==0.9.0+cpu -f https://download.pytorch.org/whl/torch_stable.html || action_env/Scripts/python.exe -m pip install torch==1.8.0+cpu torchvision==0.9.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+      shell: bash
+    - run: action_env/bin/python3 ${GITHUB_ACTION_PATH}/run.py || action_env/Scripts/python.exe ${GITHUB_ACTION_PATH}/run.py
       shell: bash
