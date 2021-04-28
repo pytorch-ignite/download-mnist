@@ -18,3 +18,7 @@ runs:
       shell: bash
     - run: action_env/bin/python3 ${GITHUB_ACTION_PATH}/run.py || action_env/Scripts/python.exe ${GITHUB_ACTION_PATH}/run.py || echo ""
       shell: bash
+    - run: ls ${{ inputs.target_dir }}/MNIST/raw
+      shell: bash
+    - run: ls ${{ inputs.target_dir }}/MNIST/processed || echo ""
+      shell: bash
