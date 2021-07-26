@@ -42,7 +42,7 @@ jobs:
       - name: Run Action
         run: |
           git clone https://github.com/pytorch-ignite/download-mnist-github-action.git /tmp/MNIST/raw
-          CUDA_VISIBLE_DEVICES=0 python $tests_mnist_dir/run.py .
+          CUDA_VISIBLE_DEVICES=0 python /tmp/MNIST/raw/run.py .
 
       - name: Check Content 
         run: ls -R /tmp/MNIST/raw
