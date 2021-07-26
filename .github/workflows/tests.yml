@@ -45,12 +45,12 @@ jobs:
           target_dir: ${{ env.MNIST_TESTS_PATH }}
 
       - name: Prepare Dir for Examples
-        run: cp -R "${{ env.MNIST_TESTS_PATH }}/MNIST" "${{ env.MNIST_EXAMPLES_PATH }}"
+        run: cp -R ${{ env.MNIST_TESTS_PATH }}/MNIST ${{ env.MNIST_EXAMPLES_PATH }}
 
       - name: Check Content 
         run: |
-          ls -R "${{ env.MNIST_TESTS_PATH }}/MNIST"
-          ls -R "${{ env.MNIST_EXAMPLES_PATH }}/MNIST"
+          ls -R ${{ env.MNIST_TESTS_PATH }}/MNIST
+          ls -R ${{ env.MNIST_EXAMPLES_PATH }}/MNIST
 
       - name: Install Dependencies (Ubuntu/Win)
         if: ${{ matrix.os != 'macos-latest' }}
@@ -103,15 +103,13 @@ jobs:
       - name: Run Action
         run: | 
           git clone https://github.com/pytorch-ignite/download-mnist-github-action.git ${{ env.MNIST_TESTS_PATH }}/action
-          mkdir -p "${{ env.MNIST_TESTS_PATH }}/MNIST/raw"
-          cp ${{ env.MNIST_TESTS_PATH }}/action/*.gz "${{ env.MNIST_TESTS_PATH }}/MNIST/raw"
-          mkdir -p "${{ env.MNIST_EXAMPLES_PATH }}/MNIST/raw"
-          cp ${{ env.MNIST_TESTS_PATH }}/action/*.gz "${{ env.MNIST_EXAMPLES_PATH }}/MNIST/raw"
+          python ${{ env.MNIST_TESTS_PATH }}/action/cp.py ${{ env.MNIST_TESTS_PATH }}/action ${{ env.MNIST_TESTS_PATH }}/MNIST/raw
+          python ${{ env.MNIST_TESTS_PATH }}/action/cp.py ${{ env.MNIST_TESTS_PATH }}/action ${{ env.MNIST_EXAMPLES_PATH }}/MNIST/raw
 
       - name: Check Content
         run: | 
-          ls -R "${{ env.MNIST_TESTS_PATH }}/MNIST"
-          ls -R "${{ env.MNIST_EXAMPLES_PATH }}/MNIST"
+          ls -R ${{ env.MNIST_TESTS_PATH }}/MNIST
+          ls -R ${{ env.MNIST_EXAMPLES_PATH }}/MNIST
 
       - name: Install Python
         uses: actions/setup-python@v2
