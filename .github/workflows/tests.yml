@@ -9,7 +9,15 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        pytorch-version: [1.9.0, 1.8.1, 1.7.1, 1.6.0, 1.5.1, 1.4.0, 1.3.1]
+        include:
+          - pytorch-version: 1.9.0
+            vision-version: 0.10.0
+          - pytorch-version: 1.8.1
+            vision-version: 0.9.0
+          - pytorch-version: 1.7.1
+            vision-version: 0.8.2
+          - pytorch-version: 1.4.0
+            vision-version: 0.5.0
 
     env:
       MNIST_TESTS_PATH: /tmp
@@ -38,7 +46,7 @@ jobs:
 
       - name: Install Dependencies
         run: | 
-          pip install torch==${{ matrix.pytorch-version }}+cpu torchvision -f https://download.pytorch.org/whl/torch_stable.html
+          pip install torch==${{ matrix.pytorch-version }}+cpu torchvision==${{ matrix.vision-version }}+cpu -f https://download.pytorch.org/whl/torch_stable.html
           pip list | grep torch
 
       - name: Run Tests
