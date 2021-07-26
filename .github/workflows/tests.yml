@@ -46,12 +46,13 @@ jobs:
       - name: Install Dependencies
         run: | 
           pip install torch==${{ matrix.pytorch-version }}+cpu torchvision==${{ matrix.vision-version }}+cpu -f https://download.pytorch.org/whl/torch_stable.html
+          pip install pytest
           pip list | grep torch
+
 
       - name: Run Tests
         run: | 
-          python -c "from torchvision.datasets.mnist import MNIST; MNIST('${{ env.MNIST_TESTS_PATH }}', download=True)"
-          python -c "from torchvision.datasets.mnist import MNIST; MNIST('${{ env.MNIST_EXAMPLES_PATH }}', download=True)"
+          python -m pytest tests -vvv
 
   cci:
     runs-on: ubuntu-latest
@@ -94,10 +95,10 @@ jobs:
 
       - name: Install Dependencies
         run: | 
-          pip install torch==1.9.0+cpu torchvision==0.10.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+          pip install torch==${{ matrix.pytorch-version }}+cpu torchvision==${{ matrix.vision-version }}+cpu -f https://download.pytorch.org/whl/torch_stable.html
+          pip install pytest
           pip list | grep torch
 
       - name: Run Tests
         run: | 
-          python -c "from torchvision.datasets.mnist import MNIST; MNIST('${{ env.MNIST_TESTS_PATH }}', download=True)"
-          python -c "from torchvision.datasets.mnist import MNIST; MNIST('${{ env.MNIST_EXAMPLES_PATH }}', download=True)"
+          python -m pytest ${{ env.MNIST_TESTS_PATH }}/action/tests -vvv
