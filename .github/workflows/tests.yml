@@ -58,4 +58,4 @@ jobs:
         run: ls -R "${{ env.MNIST_TESTS_PATH }}/MNIST"
 
       - name: Run Tests
-        run: python -c "from torchvision.datasets.mnist import MNIST; MNIST('${{ env.MNIST_TESTS_PATH }}')"
+        run: python -c "from torchvision.datasets.mnist import MNIST; MNIST('${{ env.MNIST_TESTS_PATH }}', download=True)"
