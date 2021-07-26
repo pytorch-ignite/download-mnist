@@ -1,6 +1,6 @@
 name: Tests
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   tests:
@@ -24,4 +24,4 @@ jobs:
           target_dir: /tmp
 
       - name: Inspect Content 
-        run: ls -R ${INPUT_TARGET_DIR}
+        run: ls -R ${INPUT_TARGET_DIR}/MNIST
