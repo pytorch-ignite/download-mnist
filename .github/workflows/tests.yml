@@ -1,0 +1,104 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  gha:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - pytorch-version: 1.9.0
+            vision-version: 0.10.0
+          - pytorch-version: 1.8.1
+            vision-version: 0.9.1
+          - pytorch-version: 1.7.1
+            vision-version: 0.8.2
+          - pytorch-version: 1.4.0
+            vision-version: 0.5.0
+
+    env:
+      MNIST_TESTS_PATH: /tmp
+      MNIST_EXAMPLES_PATH: .
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: Run Action
+        uses: ./
+        with:
+          target_dir: ${{ env.MNIST_TESTS_PATH }}
+
+      - name: Prepare Dir for Examples
+        run: cp -R "${{ env.MNIST_TESTS_PATH }}/MNIST" "${{ env.MNIST_EXAMPLES_PATH }}"
+
+      - name: Check Content 
+        run: |
+          ls -R "${{ env.MNIST_TESTS_PATH }}/MNIST"
+          ls -R "${{ env.MNIST_EXAMPLES_PATH }}/MNIST"
+
+      - name: Install Dependencies
+        run: | 
+          pip install torch==${{ matrix.pytorch-version }}+cpu torchvision==${{ matrix.vision-version }}+cpu -f https://download.pytorch.org/whl/torch_stable.html
+          pip install pytest
+          pip list | grep torch
+
+
+      - name: Run Tests
+        run: | 
+          python -m pytest tests -vvv
+
+  cci:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - pytorch-version: 1.9.0
+            vision-version: 0.10.0
+          - pytorch-version: 1.8.1
+            vision-version: 0.9.1
+          - pytorch-version: 1.7.1
+            vision-version: 0.8.2
+          - pytorch-version: 1.4.0
+            vision-version: 0.5.0
+
+    env:
+      MNIST_TESTS_PATH: /tmp
+      MNIST_EXAMPLES_PATH: .
+
+    steps:
+
+      - name: Run Action
+        run: | 
+          git clone https://github.com/pytorch-ignite/download-mnist-github-action.git ${{ env.MNIST_TESTS_PATH }}/action
+          mkdir -p "${{ env.MNIST_TESTS_PATH }}/MNIST/raw"
+          cp ${{ env.MNIST_TESTS_PATH }}/action/*.gz "${{ env.MNIST_TESTS_PATH }}/MNIST/raw"
+          mkdir -p "${{ env.MNIST_EXAMPLES_PATH }}/MNIST/raw"
+          cp ${{ env.MNIST_TESTS_PATH }}/action/*.gz "${{ env.MNIST_EXAMPLES_PATH }}/MNIST/raw"
+
+      - name: Check Content
+        run: | 
+          ls -R "${{ env.MNIST_TESTS_PATH }}/MNIST"
+          ls -R "${{ env.MNIST_EXAMPLES_PATH }}/MNIST"
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: Install Dependencies
+        run: | 
+          pip install torch==${{ matrix.pytorch-version }}+cpu torchvision==${{ matrix.vision-version }}+cpu -f https://download.pytorch.org/whl/torch_stable.html
+          pip install pytest
+          pip list | grep torch
+
+      - name: Run Tests
+        run: | 
+          python -m pytest ${{ env.MNIST_TESTS_PATH }}/action/tests -vvv
