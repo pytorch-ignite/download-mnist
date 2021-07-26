@@ -3,7 +3,7 @@ name: Tests
 on: [push]
 
 jobs:
-  tests:
+  gha:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -23,5 +23,26 @@ jobs:
         with:
           target_dir: /tmp
 
-      - name: Inspect Content 
+      - name: Check Content 
         run: ls -R ${INPUT_TARGET_DIR}/MNIST
+
+  cci:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: Run Action
+        run: |
+          git clone https://github.com/pytorch-ignite/download-mnist-github-action.git /tmp/MNIST/raw
+          CUDA_VISIBLE_DEVICES=0 python $tests_mnist_dir/run.py .
+
+      - name: Check Content 
+        run: ls -R /tmp/MNIST/raw
