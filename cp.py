@@ -5,9 +5,9 @@ import sys
 
 def main(input_dir, target_dir):
     os.makedirs(target_dir, exist_ok=True)
-    for fname in os.listdir():
+    for fname in os.listdir(input_dir):
         if fname.endswith(".gz"):
-            print(f"Copying {fname} to {target_dir}")
+            print("Copying {} to {}".format(fname, target_dir))
             shutil.copy2(
                 os.path.join(input_dir, fname), os.path.join(target_dir, fname)
             )

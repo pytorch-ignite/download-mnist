@@ -107,8 +107,8 @@ jobs:
       - name: Run Action
         run: | 
           git clone https://github.com/pytorch-ignite/download-mnist-github-action.git ${{ env.MNIST_TESTS_PATH }}/action
-          python ${{ env.MNIST_TESTS_PATH }}/action/cp.py ${{ env.MNIST_TESTS_PATH }}/action ${{ env.MNIST_TESTS_PATH }}/MNIST/raw
-          python ${{ env.MNIST_TESTS_PATH }}/action/cp.py ${{ env.MNIST_TESTS_PATH }}/action ${{ env.MNIST_EXAMPLES_PATH }}/MNIST/raw
+          python3 ${{ env.MNIST_TESTS_PATH }}/action/cp.py ${{ env.MNIST_TESTS_PATH }}/action ${{ env.MNIST_TESTS_PATH }}/MNIST/raw
+          python3 ${{ env.MNIST_TESTS_PATH }}/action/cp.py ${{ env.MNIST_TESTS_PATH }}/action ${{ env.MNIST_EXAMPLES_PATH }}/MNIST/raw
         shell: bash
 
       - name: Check Content
@@ -139,5 +139,5 @@ jobs:
 
       - name: Run Tests
         run: | 
-          python -m pytest ${{ env.MNIST_TESTS_PATH }}/action/tests -vvv -s
+          python3 -m pytest ${{ env.MNIST_TESTS_PATH }}/action/tests -vvv -s
         shell: bash
