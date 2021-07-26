@@ -22,12 +22,11 @@ jobs:
             pytorch-version: 1.4.0
             vision-version: 0.5.0
           - os: macos-latest
-            pytorch-version: 1.8.0
-            vision-version: 0.9.0
+            pytorch-version: 1.9.0
+            vision-version: 0.10.0
           - os: windows-latest
-            pytorch-version: 1.8.0
-            vision-version: 0.9.0
-
+            pytorch-version: 1.9.0
+            vision-version: 0.10.0
     env:
       MNIST_TESTS_PATH: /tmp
       MNIST_EXAMPLES_PATH: .
@@ -53,12 +52,19 @@ jobs:
           ls -R "${{ env.MNIST_TESTS_PATH }}/MNIST"
           ls -R "${{ env.MNIST_EXAMPLES_PATH }}/MNIST"
 
-      - name: Install Dependencies
+      - name: Install Dependencies (Ubuntu/Win)
+        if: ${{ matrix.os != 'macos-latest' }}
         run: | 
           pip install torch==${{ matrix.pytorch-version }}+cpu torchvision==${{ matrix.vision-version }}+cpu -f https://download.pytorch.org/whl/torch_stable.html
           pip install pytest
           pip list | grep torch
 
+      - name: Install Dependencies (MacOS)
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: |
+          pip install torch==${{ matrix.pytorch-version }} torchvision==${{ matrix.vision-version }}
+          pip install pytest
+          pip list | grep torch
 
       - name: Run Tests
         run: | 
@@ -83,12 +89,11 @@ jobs:
             pytorch-version: 1.4.0
             vision-version: 0.5.0
           - os: macos-latest
-            pytorch-version: 1.8.0
-            vision-version: 0.9.0
+            pytorch-version: 1.9.0
+            vision-version: 0.10.0
           - os: windows-latest
-            pytorch-version: 1.8.0
-            vision-version: 0.9.0
-
+            pytorch-version: 1.9.0
+            vision-version: 0.10.0
     env:
       MNIST_TESTS_PATH: /tmp
       MNIST_EXAMPLES_PATH: .
@@ -113,9 +118,17 @@ jobs:
         with:
           python-version: 3.7
 
-      - name: Install Dependencies
+      - name: Install Dependencies (Ubuntu/Win)
+        if: ${{ matrix.os != 'macos-latest' }}
         run: | 
           pip install torch==${{ matrix.pytorch-version }}+cpu torchvision==${{ matrix.vision-version }}+cpu -f https://download.pytorch.org/whl/torch_stable.html
+          pip install pytest
+          pip list | grep torch
+
+      - name: Install Dependencies (MacOS)
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: |
+          pip install torch==${{ matrix.pytorch-version }} torchvision==${{ matrix.vision-version }}
           pip install pytest
           pip list | grep torch
 
