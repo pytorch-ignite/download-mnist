@@ -9,6 +9,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
+    env:
+      MNIST_TESTS_PATH: /tmp
+      MNIST_EXAMPLES_PATH: .
 
     steps:
       - uses: actions/checkout@v2
@@ -21,10 +24,10 @@ jobs:
       - name: Run Action
         uses: ./
         with:
-          target_dir: /tmp
+          target_dir: ${{ env.MNIST_TESTS_PATH }}
 
       - name: Check Content 
-        run: ls -R ${INPUT_TARGET_DIR}/MNIST
+        run: ls -R "${{ env.MNIST_TESTS_PATH }}/MNIST"
 
   cci:
     runs-on: ${{ matrix.os }}
@@ -32,6 +35,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
+    env:
+      MNIST_TESTS_PATH: /tmp
+      MNIST_EXAMPLES_PATH: .
 
     steps:
       - name: Install Python
@@ -40,13 +46,16 @@ jobs:
           python-version: 3.7
 
       - name: Install Dependencies
-        run: pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+        run: pip install torch==1.9.0+cpu torchvision==0.10.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
       - name: Run Action
-        run: git clone https://github.com/pytorch-ignite/download-mnist-github-action.git /tmp/MNIST/raw
+        run: | 
+          git clone https://github.com/pytorch-ignite/download-mnist-github-action.git ${{ env.MNIST_TESTS_PATH }}/action
+          mkdir -p "${{ env.MNIST_TESTS_PATH }}/MNIST/raw"
+          cp ${{ env.MNIST_TESTS_PATH }}/action/*.gz "${{ env.MNIST_TESTS_PATH }}/MNIST/raw"
 
       - name: Check Content
-        run: ls -R /tmp/MNIST/raw
-        
+        run: ls -R "${{ env.MNIST_TESTS_PATH }}/MNIST"
+
       - name: Run Tests
-        run: python -c "from torchvision.datasets.mnist import MNIST; MNIST('/tmp')"
+        run: python -c "from torchvision.datasets.mnist import MNIST; MNIST('${{ env.MNIST_TESTS_PATH }}')"
