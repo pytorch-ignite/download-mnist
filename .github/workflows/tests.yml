@@ -4,11 +4,10 @@ on: [push]
 
 jobs:
   gha:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
         include:
           - pytorch-version: 1.9.0
             vision-version: 0.10.0
