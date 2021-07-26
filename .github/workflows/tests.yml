@@ -4,19 +4,29 @@ on: [push]
 
 jobs:
   gha:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - pytorch-version: 1.9.0
+          - os: ubuntu-latest
+            pytorch-version: 1.9.0
             vision-version: 0.10.0
-          - pytorch-version: 1.8.1
+          - os: ubuntu-latest
+            pytorch-version: 1.8.1
             vision-version: 0.9.1
-          - pytorch-version: 1.7.1
+          - os: ubuntu-latest
+            pytorch-version: 1.7.1
             vision-version: 0.8.2
-          - pytorch-version: 1.4.0
+          - os: ubuntu-latest
+            pytorch-version: 1.4.0
             vision-version: 0.5.0
+          - os: macos-latest
+            pytorch-version: 1.9.0
+            vision-version: 0.10.0
+          - os: windows-latest
+            pytorch-version: 1.9.0
+            vision-version: 0.10.0
 
     env:
       MNIST_TESTS_PATH: /tmp
@@ -55,19 +65,29 @@ jobs:
           python -m pytest tests -vvv -s
 
   cci:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - pytorch-version: 1.9.0
+          - os: ubuntu-latest
+            pytorch-version: 1.9.0
             vision-version: 0.10.0
-          - pytorch-version: 1.8.1
+          - os: ubuntu-latest
+            pytorch-version: 1.8.1
             vision-version: 0.9.1
-          - pytorch-version: 1.7.1
+          - os: ubuntu-latest
+            pytorch-version: 1.7.1
             vision-version: 0.8.2
-          - pytorch-version: 1.4.0
+          - os: ubuntu-latest
+            pytorch-version: 1.4.0
             vision-version: 0.5.0
+          - os: macos-latest
+            pytorch-version: 1.9.0
+            vision-version: 0.10.0
+          - os: windows-latest
+            pytorch-version: 1.9.0
+            vision-version: 0.10.0
 
     env:
       MNIST_TESTS_PATH: /tmp
