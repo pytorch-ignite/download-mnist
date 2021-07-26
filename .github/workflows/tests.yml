@@ -26,8 +26,21 @@ jobs:
         with:
           target_dir: ${{ env.MNIST_TESTS_PATH }}
 
+      - name: Prepare Dir for Examples
+        run: cp -R "${{ env.MNIST_TESTS_PATH }}/MNIST" "${{ env.MNIST_EXAMPLES_PATH }}"
+
       - name: Check Content 
-        run: ls -R "${{ env.MNIST_TESTS_PATH }}/MNIST"
+        run: |
+          ls -R "${{ env.MNIST_TESTS_PATH }}/MNIST"
+          ls -R "${{ env.MNIST_EXAMPLES_PATH }}/MNIST"
+
+      - name: Install Dependencies
+        run: pip install torch==1.9.0+cpu torchvision==0.10.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+
+      - name: Run Tests
+        run: | 
+          python -c "from torchvision.datasets.mnist import MNIST; MNIST('${{ env.MNIST_TESTS_PATH }}', download=True)"
+          python -c "from torchvision.datasets.mnist import MNIST; MNIST('${{ env.MNIST_EXAMPLES_PATH }}', download=True)"
 
   cci:
     runs-on: ${{ matrix.os }}
@@ -40,6 +53,20 @@ jobs:
       MNIST_EXAMPLES_PATH: .
 
     steps:
+
+      - name: Run Action
+        run: | 
+          git clone https://github.com/pytorch-ignite/download-mnist-github-action.git ${{ env.MNIST_TESTS_PATH }}/action
+          mkdir -p "${{ env.MNIST_TESTS_PATH }}/MNIST/raw"
+          cp ${{ env.MNIST_TESTS_PATH }}/action/*.gz "${{ env.MNIST_TESTS_PATH }}/MNIST/raw"
+          mkdir -p "${{ env.MNIST_EXAMPLES_PATH }}/MNIST/raw"
+          cp ${{ env.MNIST_TESTS_PATH }}/action/*.gz "${{ env.MNIST_EXAMPLES_PATH }}/MNIST/raw"
+
+      - name: Check Content
+        run: | 
+          ls -R "${{ env.MNIST_TESTS_PATH }}/MNIST"
+          ls -R "${{ env.MNIST_EXAMPLES_PATH }}/MNIST"
+
       - name: Install Python
         uses: actions/setup-python@v2
         with:
@@ -48,14 +75,7 @@ jobs:
       - name: Install Dependencies
         run: pip install torch==1.9.0+cpu torchvision==0.10.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
-      - name: Run Action
-        run: | 
-          git clone https://github.com/pytorch-ignite/download-mnist-github-action.git ${{ env.MNIST_TESTS_PATH }}/action
-          mkdir -p "${{ env.MNIST_TESTS_PATH }}/MNIST/raw"
-          cp ${{ env.MNIST_TESTS_PATH }}/action/*.gz "${{ env.MNIST_TESTS_PATH }}/MNIST/raw"
-
-      - name: Check Content
-        run: ls -R "${{ env.MNIST_TESTS_PATH }}/MNIST"
-
       - name: Run Tests
-        run: python -c "from torchvision.datasets.mnist import MNIST; MNIST('${{ env.MNIST_TESTS_PATH }}', download=True)"
+        run: | 
+          python -c "from torchvision.datasets.mnist import MNIST; MNIST('${{ env.MNIST_TESTS_PATH }}', download=True)"
+          python -c "from torchvision.datasets.mnist import MNIST; MNIST('${{ env.MNIST_EXAMPLES_PATH }}', download=True)"
