@@ -46,11 +46,13 @@ jobs:
 
       - name: Prepare Dir for Examples
         run: cp -R ${{ env.MNIST_TESTS_PATH }}/MNIST ${{ env.MNIST_EXAMPLES_PATH }}
+        shell: bash
 
       - name: Check Content 
         run: |
           ls -R ${{ env.MNIST_TESTS_PATH }}/MNIST
           ls -R ${{ env.MNIST_EXAMPLES_PATH }}/MNIST
+        shell: bash
 
       - name: Install Dependencies (Ubuntu/Win)
         if: ${{ matrix.os != 'macos-latest' }}
@@ -58,6 +60,7 @@ jobs:
           pip install torch==${{ matrix.pytorch-version }}+cpu torchvision==${{ matrix.vision-version }}+cpu -f https://download.pytorch.org/whl/torch_stable.html
           pip install pytest
           pip list | grep torch
+        shell: bash
 
       - name: Install Dependencies (MacOS)
         if: ${{ matrix.os == 'macos-latest' }}
@@ -69,6 +72,7 @@ jobs:
       - name: Run Tests
         run: | 
           python -m pytest tests -vvv -s
+        shell: bash
 
   cci:
     runs-on: ${{ matrix.os }}
@@ -105,11 +109,13 @@ jobs:
           git clone https://github.com/pytorch-ignite/download-mnist-github-action.git ${{ env.MNIST_TESTS_PATH }}/action
           python ${{ env.MNIST_TESTS_PATH }}/action/cp.py ${{ env.MNIST_TESTS_PATH }}/action ${{ env.MNIST_TESTS_PATH }}/MNIST/raw
           python ${{ env.MNIST_TESTS_PATH }}/action/cp.py ${{ env.MNIST_TESTS_PATH }}/action ${{ env.MNIST_EXAMPLES_PATH }}/MNIST/raw
+        shell: bash
 
       - name: Check Content
         run: | 
           ls -R ${{ env.MNIST_TESTS_PATH }}/MNIST
           ls -R ${{ env.MNIST_EXAMPLES_PATH }}/MNIST
+        shell: bash
 
       - name: Install Python
         uses: actions/setup-python@v2
@@ -122,6 +128,7 @@ jobs:
           pip install torch==${{ matrix.pytorch-version }}+cpu torchvision==${{ matrix.vision-version }}+cpu -f https://download.pytorch.org/whl/torch_stable.html
           pip install pytest
           pip list | grep torch
+        shell: bash
 
       - name: Install Dependencies (MacOS)
         if: ${{ matrix.os == 'macos-latest' }}
@@ -133,3 +140,4 @@ jobs:
       - name: Run Tests
         run: | 
           python -m pytest ${{ env.MNIST_TESTS_PATH }}/action/tests -vvv -s
+        shell: bash
