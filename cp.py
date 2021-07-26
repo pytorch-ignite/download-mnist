@@ -11,6 +11,9 @@ def main(input_dir, target_dir):
             shutil.copy2(
                 os.path.join(input_dir, fname), os.path.join(target_dir, fname)
             )
+    print(target_dir + ":")
+    for f in os.listdir(target_dir):
+        print(f)
 
 
 if __name__ == "__main__":

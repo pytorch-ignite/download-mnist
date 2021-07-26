@@ -12,6 +12,3 @@ runs:
   steps:
     - run: python3 ${GITHUB_ACTION_PATH}/cp.py ${GITHUB_ACTION_PATH} ${{ inputs.target_dir }}/MNIST/raw || python.exe ${GITHUB_ACTION_PATH}/cp.py ${GITHUB_ACTION_PATH} ${{ inputs.target_dir }}/MNIST/raw || echo ""
       shell: bash
-
-    - run: ls -R ${{ inputs.target_dir }}/MNIST
-      shell: bash
