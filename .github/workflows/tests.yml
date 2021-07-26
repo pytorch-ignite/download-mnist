@@ -24,5 +24,4 @@ jobs:
           target_dir: /tmp
 
       - name: Inspect Content 
-        run: ls -R ${GITHUB_ACTION_PATH}
-
+        run: ls -R ${INPUT_TARGET_DIR}
